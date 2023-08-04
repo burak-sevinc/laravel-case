@@ -4,13 +4,17 @@ namespace App\Repositories;
 
 use App\Models\Currency;
 use App\Models\CurrencyValue;
+use App\Services\CurrencyService;
 
 class EloquentCurrencyValueRepository implements CurrencyValueRepositoryInterface
 {
-    public function getCurrency($currencyCode)
+    private $currencyService;
+
+    public function __construct(CurrencyService $currencyService)
     {
-        return Currency::where('currency_code', $currencyCode)->first();
+        $this->currencyService = $currencyService;
     }
+
     public function getCurrencyValues($currencyCode)
     {
         $currency = Currency::where('currency_code', $currencyCode)->first();
@@ -25,7 +29,7 @@ class EloquentCurrencyValueRepository implements CurrencyValueRepositoryInterfac
     }
     public function create(array $data)
     {
-        $currency = $this->getCurrency($data['currency_code']);
+        $currency = $this->currencyService->findCurrency($data['currency_code']);
         if (!$currency) {
             return null;
         }

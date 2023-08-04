@@ -9,14 +9,18 @@ use App\Http\Requests\StoreCurrencyRequest;
 use App\Http\Requests\UpdateCurrencyRequest;
 use Illuminate\Http\Request;
 use App\Repositories\CurrencyRepositoryInterface;
+use App\Services\CurrencyService;
 use Illuminate\Http\Response;
 
 class CurrencyController extends Controller
 {
     private $currencyRepository;
-    public function __construct(CurrencyRepositoryInterface $currencyRepository)
+    private $currencyService;
+
+    public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyService $currencyService)
     {
         $this->currencyRepository = $currencyRepository;
+        $this->currencyService = $currencyService;
         $this->middleware('auth:api')->only(['store', 'update', 'destroy']);
     }
     public function __invoke(Request $request)
@@ -29,7 +33,7 @@ class CurrencyController extends Controller
 
     public function show($currencyCode)
     {
-        $currency = $this->currencyRepository->find($currencyCode);
+        $currency = $this->currencyService->findCurrency($currencyCode);
 
         if (!$currency) {
             return response()->json([
@@ -69,7 +73,7 @@ class CurrencyController extends Controller
     public function update(UpdateCurrencyRequest $request, $currencyCode)
     {
         try {
-            $currency = $this->currencyRepository->find($currencyCode);
+            $currency = $this->currencyService->findCurrency($currencyCode);
 
             if (!$currency) {
                 return response()->json([
@@ -95,7 +99,7 @@ class CurrencyController extends Controller
     public function destroy($currencyCode)
     {
         try {
-            $currency = $this->currencyRepository->find($currencyCode);
+            $currency = $this->currencyService->findCurrency($currencyCode);
 
             if (!$currency) {
                 return response()->json([

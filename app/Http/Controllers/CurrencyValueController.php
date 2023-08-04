@@ -9,19 +9,22 @@ use App\Http\Requests\StoreCurrencyValueRequest;
 use App\Http\Requests\UpdateCurrencyValueRequest;
 use Illuminate\Http\Request;
 use App\Repositories\CurrencyValueRepositoryInterface;
+use App\Services\CurrencyService;
 use Illuminate\Http\Response;
 
 class CurrencyValueController extends Controller
 {
     private $currencyValueRepository;
-    public function __construct(CurrencyValueRepositoryInterface $currencyValueRepository)
+    private $currencyService;
+    public function __construct(CurrencyValueRepositoryInterface $currencyValueRepository, CurrencyService $currencyService)
     {
         $this->currencyValueRepository = $currencyValueRepository;
+        $this->currencyService = $currencyService;
         $this->middleware('auth:api')->only(['store', 'update', 'destroy']);
     }
     public function index(string $currencyCode)
     {
-        $currency = $this->currencyValueRepository->getCurrency($currencyCode);
+        $currency = $this->currencyService->findCurrency($currencyCode);
         if (!$currency) {
             return response()->json(['error' => 'Currency not found'], 404);
         }

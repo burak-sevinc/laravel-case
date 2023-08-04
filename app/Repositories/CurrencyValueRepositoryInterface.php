@@ -6,7 +6,6 @@ use App\Models\CurrencyValue;
 
 interface CurrencyValueRepositoryInterface
 {
-    public function getCurrency($currencyCode);
     public function getCurrencyValues($currencyCode);
     public function create(array $data);
     public function find($id);
