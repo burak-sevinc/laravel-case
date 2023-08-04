@@ -22,7 +22,7 @@ class CurrencyValueController extends Controller
         $this->currencyService = $currencyService;
         $this->middleware('auth:api')->only(['store', 'update', 'destroy']);
     }
-    public function index(string $currencyCode)
+    public function __invoke(string $currencyCode)
     {
         $currency = $this->currencyService->findCurrency($currencyCode);
         if (!$currency) {
