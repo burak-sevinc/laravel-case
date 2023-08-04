@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('symbol', 3);
             $table->foreignId('created_by')->constrained('users');
             $table->timestamps();
-            $table->index(['currencyCode', 'created_at']);
+            $table->index(['currency_code', 'created_at']);
         });
     }
 
