@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\CurrencyConvertController;
 use App\Http\Controllers\CurrencyValueController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,3 +33,5 @@ Route::group(['prefix' => 'currency-values'], function () {
     Route::put('/{id}', [CurrencyValueController::class, 'update']);
     Route::delete('/{id}', [CurrencyValueController::class, 'destroy']);
 });
+
+Route::get('/calculate', CurrencyConvertController::class);
