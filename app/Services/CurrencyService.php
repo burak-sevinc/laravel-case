@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Http\Resources\CurrencyResource;
 use App\Repositories\EloquentCurrencyRepository;
 
 class CurrencyService
@@ -18,5 +19,10 @@ class CurrencyService
     public function findCurrency($currencyCode)
     {
         return $this->currencyRepository->find($currencyCode);
+    }
+
+    public function formatCurrency($currency)
+    {
+        return CurrencyResource::make($currency);
     }
 }

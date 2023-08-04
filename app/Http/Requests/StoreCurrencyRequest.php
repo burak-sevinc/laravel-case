@@ -22,9 +22,18 @@ class StoreCurrencyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'long_name' => 'required|string',
-            'currency_code' => 'required|string|max:3|unique:currencies,currency_code',
+            'longName' => 'required|string',
+            'currencyCode' => 'required|string|max:3|unique:currencies,currency_code',
             'symbol' => 'required|string|max:1',
+        ];
+    }
+
+    public function data()
+    {
+        return [
+            'long_name' => $this->input('longName'),
+            'currency_code' => $this->input('currencyCode'),
+            'symbol' => $this->input('symbol'),
         ];
     }
 

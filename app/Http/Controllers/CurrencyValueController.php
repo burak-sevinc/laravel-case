@@ -34,13 +34,15 @@ class CurrencyValueController extends Controller
         $currency_values = $values->map(static function ($value) {
             return [
                 'id' => $value['id'],
-                'logged_date' => $value['logged_at'],
+                'loggedDate' => $value['logged_at'],
                 'value' => $value['currency_value'] * 100
             ];
         });
 
+        $formattedCurrency = $this->currencyService->formatCurrency($currency);
+
         return response()->json(['data' => [
-            'currency' => $currency,
+            'currency' => $formattedCurrency,
             'values' => $currency_values
         ]], 200);
     }
@@ -48,7 +50,7 @@ class CurrencyValueController extends Controller
     public function store(StoreCurrencyValueRequest $request)
     {
         try {
-            $data = $request->validated();
+            $data = $request->data();
 
             // Create the currency value
             $currencyValue = $this->currencyValueRepository->create($data);
@@ -83,7 +85,7 @@ class CurrencyValueController extends Controller
                 ], Response::HTTP_NOT_FOUND);
             };
 
-            $data = $request->validated();
+            $data = $request->data();
             $updatedCurrencyValue = $this->currencyValueRepository->update($currencyValue, $data);
 
             return response()->json([

@@ -34,6 +34,8 @@ class CurrencyController extends Controller
     public function show($currencyCode)
     {
         $currency = $this->currencyService->findCurrency($currencyCode);
+        // Format the currency for the response
+        $currency = $this->currencyService->formatCurrency($currency);
 
         if (!$currency) {
             return response()->json([
@@ -49,9 +51,8 @@ class CurrencyController extends Controller
     public function store(StoreCurrencyRequest $request)
     {
         try {
-            // Add the user id to the request data
-            $data = $request->validated();
-            // $data['created_by'] = Auth::id();
+            // Get camelCase data from request converted to snake_case
+            $data = $request->data();
 
             // Create the currency
             $currency = $this->currencyRepository->create($data);
@@ -81,7 +82,7 @@ class CurrencyController extends Controller
                 ], Response::HTTP_NOT_FOUND);
             };
 
-            $data = $request->validated();
+            $data = $request->data();
             $updatedCurrency = $this->currencyRepository->update($currency, $data);
 
             return response()->json([

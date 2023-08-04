@@ -22,8 +22,16 @@ class StoreCurrencyValueRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'currency_code' => 'required|string|max:3',
-            'currency_value' => 'required|numeric|regex:/^\d+(\.\d+)?$/',
+            'currencyCode' => 'required|string|max:3',
+            'currencyValue' => 'required|numeric|regex:/^\d+(\.\d+)?$/',
+        ];
+    }
+
+    public function data()
+    {
+        return [
+            'currency_code' => $this->input('currencyCode'),
+            'currency_value' => $this->input('currencyValue')
         ];
     }
 }

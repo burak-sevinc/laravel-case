@@ -2,13 +2,15 @@
 
 namespace App\Repositories;
 
+use App\Http\Resources\CurrencyResource;
 use App\Models\Currency;
 
 class EloquentCurrencyRepository implements CurrencyRepositoryInterface
 {
     public function all()
     {
-        return Currency::all();
+        $currencies = Currency::all();
+        return CurrencyResource::collection($currencies);
     }
 
     public function create(array $data)
@@ -20,7 +22,7 @@ class EloquentCurrencyRepository implements CurrencyRepositoryInterface
             'created_by' => auth()->user()->id,
         ]);
 
-        return $currency;
+        return CurrencyResource::make($currency);
     }
 
     public function find($currencyCode)
@@ -37,7 +39,7 @@ class EloquentCurrencyRepository implements CurrencyRepositoryInterface
             'symbol' => $data['symbol'],
         ]);
 
-        return $currency;
+        return CurrencyResource::make($currency);
     }
 
     public function delete($currencyCode)

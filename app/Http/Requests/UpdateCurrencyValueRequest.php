@@ -22,7 +22,14 @@ class UpdateCurrencyValueRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'currency_value' => 'required|string',
+            'currencyValue' => 'required|string',
+        ];
+    }
+
+    public function data()
+    {
+        return [
+            'currency_value' => $this->input('currencyValue'),
         ];
     }
 }

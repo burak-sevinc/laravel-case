@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Resources\CurrencyValueResource;
 use App\Models\Currency;
 use App\Models\CurrencyValue;
 use App\Services\CurrencyService;
@@ -59,7 +60,7 @@ class EloquentCurrencyValueRepository implements CurrencyValueRepositoryInterfac
             'logged_at' => now(),
         ]);
 
-        return $currencyValue;
+        return CurrencyValueResource::make($currencyValue);
     }
 
     public function find($id)
@@ -74,7 +75,7 @@ class EloquentCurrencyValueRepository implements CurrencyValueRepositoryInterfac
             'currency_value' => $data['currency_value'],
         ]);
 
-        return $currencyValue;
+        return CurrencyValueResource::make($currencyValue);
     }
 
     public function delete($id)
