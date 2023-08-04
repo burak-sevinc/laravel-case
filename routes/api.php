@@ -34,4 +34,4 @@ Route::group(['prefix' => 'currency-values'], function () {
     Route::delete('/{id}', [CurrencyValueController::class, 'destroy']);
 });
 
-Route::get('/calculate', CurrencyConvertController::class);
+Route::get('/convert', CurrencyConvertController::class);
