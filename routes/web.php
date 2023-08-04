@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return response()->json([
-        'currency-api' => [
-            'version' => '1.7.8',
-            'helath' => 'OK'
+        'currencyApi' => [
+            'version' => '1.0.0',
+            'health' => 'OK'
         ]
     ], 200);
 });
