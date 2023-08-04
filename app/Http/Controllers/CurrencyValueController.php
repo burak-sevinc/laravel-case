@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCurrencyValueRequest;
+use App\Http\Requests\UpdateCurrencyValueRequest;
 use Illuminate\Http\Request;
 use App\Repositories\CurrencyValueRepositoryInterface;
+use Illuminate\Http\Response;
 
 class CurrencyValueController extends Controller
 {
@@ -14,8 +17,9 @@ class CurrencyValueController extends Controller
     public function __construct(CurrencyValueRepositoryInterface $currencyValueRepository)
     {
         $this->currencyValueRepository = $currencyValueRepository;
+        $this->middleware('auth:api')->only(['store', 'update', 'destroy']);
     }
-    public function __invoke(Request $request, string $currencyCode)
+    public function index(string $currencyCode)
     {
         $currency = $this->currencyValueRepository->getCurrency($currencyCode);
         if (!$currency) {
@@ -26,6 +30,7 @@ class CurrencyValueController extends Controller
 
         $currency_values = $values->map(static function ($value) {
             return [
+                'id' => $value['id'],
                 'logged_date' => $value['logged_at'],
                 'value' => $value['currency_value'] * 100
             ];
@@ -35,5 +40,77 @@ class CurrencyValueController extends Controller
             'currency' => $currency,
             'values' => $currency_values
         ]], 200);
+    }
+
+    public function store(StoreCurrencyValueRequest $request)
+    {
+        try {
+            $data = $request->validated();
+
+            // Create the currency value
+            $currencyValue = $this->currencyValueRepository->create($data);
+
+            // Return the response
+            return response()->json([
+                'message' => 'Currency value created successfully.',
+                'data' => $currencyValue,
+            ], Response::HTTP_CREATED);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'An error occurred while creating.',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function update(UpdateCurrencyValueRequest $request, $id)
+    {
+        try {
+            $currencyValue = $this->currencyValueRepository->find($id);
+
+            if (!$currencyValue) {
+                return response()->json([
+                    'message' => 'Currency value not found.',
+                ], Response::HTTP_NOT_FOUND);
+            };
+
+            $data = $request->validated();
+            $updatedCurrencyValue = $this->currencyValueRepository->update($currencyValue, $data);
+
+            return response()->json([
+                'message' => 'Currency value updated successfully.',
+                'data' => $updatedCurrencyValue,
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while updating the currency value.',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $currencyValue = $this->currencyValueRepository->find($id);
+
+            if (!$currencyValue) {
+                return response()->json([
+                    'message' => 'Currency value not found.',
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            $this->currencyValueRepository->delete($currencyValue->id);
+
+            return response()->json([
+                'message' => 'Currency value deleted successfully.',
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while deleting the currency value.',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

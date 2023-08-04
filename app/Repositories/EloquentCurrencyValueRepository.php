@@ -17,10 +17,41 @@ class EloquentCurrencyValueRepository implements CurrencyValueRepositoryInterfac
         if (!$currency) {
             return null;
         }
-        $values = CurrencyValue::select(['logged_at', 'currency_value'])->where('currency_id', $currency->id)->get();
+        $values = CurrencyValue::select(['id', 'logged_at', 'currency_value'])->where('currency_id', $currency->id)->get();
         if ($values->isEmpty()) {
             return null;
         }
         return $values;
+    }
+    public function create(array $data)
+    {
+        $currencyValue = CurrencyValue::create([
+            'currency_id' => $data['currency_id'],
+            'currency_value' => $data['currency_value'],
+            'logged_at' => now(),
+        ]);
+
+        return $currencyValue;
+    }
+
+    public function find($id)
+    {
+        $currencyValue = CurrencyValue::find($id);
+        return $currencyValue;
+    }
+
+    public function update(CurrencyValue $currencyValue, array $data)
+    {
+        $currencyValue->update([
+            'currency_value' => $data['currency_value'],
+        ]);
+
+        return $currencyValue;
+    }
+
+    public function delete($id)
+    {
+        $currencyValue = CurrencyValue::find($id);
+        $currencyValue->delete();
     }
 }
