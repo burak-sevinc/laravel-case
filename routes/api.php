@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('api.public')
-    ->get('/currencies', App\Http\Controllers\Currencies\ListCurrencies::class);
+Route::get('/currencies', App\Http\Controllers\Currencies\ListCurrencies::class);
 
-Route::middleware('api.public')
-    ->get('/currency_values/{currencyCode}', App\Http\Controllers\Currencies\listLatestCurrencyValues::class);
+Route::get('/currency-values/{currencyCode}', App\Http\Controllers\Currencies\listLatestCurrencyValues::class);
