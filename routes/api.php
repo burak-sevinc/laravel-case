@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/login', [App\Http\Controllers\AuthController::class, 'login']);
 Route::get('/currencies', App\Http\Controllers\CurrencyController::class);
-
 Route::get('/currency-values/{currencyCode}', App\Http\Controllers\CurrencyValueController::class);

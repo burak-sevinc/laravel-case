@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\AuthRepository;
+use App\Repositories\AuthRepositoryInterface;
 use App\Repositories\CurrencyRepositoryInterface;
 use App\Repositories\CurrencyValueRepositoryInterface;
 use App\Repositories\EloquentCurrencyRepository;
@@ -17,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(CurrencyRepositoryInterface::class, EloquentCurrencyRepository::class);
         $this->app->bind(CurrencyValueRepositoryInterface::class, EloquentCurrencyValueRepository::class);
+        $this->app->bind(AuthRepositoryInterface::class, AuthRepository::class);
     }
 
     /**
