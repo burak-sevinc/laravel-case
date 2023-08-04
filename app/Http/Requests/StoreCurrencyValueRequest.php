@@ -22,7 +22,7 @@ class StoreCurrencyValueRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'currency_id' => 'required|uuid',
+            'currency_code' => 'required|string|max:3',
             'currency_value' => 'required|numeric|regex:/^\d+(\.\d+)?$/',
         ];
     }

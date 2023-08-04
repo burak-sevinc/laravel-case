@@ -49,6 +49,11 @@ class CurrencyValueController extends Controller
 
             // Create the currency value
             $currencyValue = $this->currencyValueRepository->create($data);
+            if (!$currencyValue) {
+                return response()->json([
+                    'message' => 'Currency not found.',
+                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
 
             // Return the response
             return response()->json([

@@ -25,8 +25,13 @@ class EloquentCurrencyValueRepository implements CurrencyValueRepositoryInterfac
     }
     public function create(array $data)
     {
+        $currency = $this->getCurrency($data['currency_code']);
+        if (!$currency) {
+            return null;
+        }
+
         $currencyValue = CurrencyValue::create([
-            'currency_id' => $data['currency_id'],
+            'currency_id' => $currency->id,
             'currency_value' => $data['currency_value'],
             'logged_at' => now(),
         ]);
