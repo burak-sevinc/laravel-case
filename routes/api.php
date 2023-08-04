@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/currencies', App\Http\Controllers\Currencies\CurrencyController::class);
+Route::get('/currencies', App\Http\Controllers\CurrencyController::class);
 
-Route::get('/currency-values/{currencyCode}', App\Http\Controllers\Currencies\CurrencyValueController::class);
+Route::get('/currency-values/{currencyCode}', App\Http\Controllers\CurrencyValueController::class);
