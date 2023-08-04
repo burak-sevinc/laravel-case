@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CurrencyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,5 +16,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'login']);
-Route::get('/currencies', App\Http\Controllers\CurrencyController::class);
+Route::group(['prefix' => 'currencies'], function () {
+    Route::get('/', [CurrencyController::class, 'index']);
+    Route::post('/', [CurrencyController::class, 'store']);
+    Route::get('/{currencyCode}', [CurrencyController::class, 'show']);
+    Route::put('/{currencyCode}', [CurrencyController::class, 'update']);
+    Route::delete('/{currencyCode}', [CurrencyController::class, 'destroy']);
+});
 Route::get('/currency-values/{currencyCode}', App\Http\Controllers\CurrencyValueController::class);
