@@ -8,11 +8,11 @@
 - [ ] Need Resources in Http folder for request and response key names convert snake_case to camelCase
 - [x] Implement JWT Auth with Repository Pattern
 - [x] CurrencyController need CRUD functions (Write funcs need auth:api parameters in construct for authentication)
-- [ ] CurrencyValueController need CRUD functions
+- [x] CurrencyValueController need CRUD functions
 - [x] CurrencyController need Repository with Interfaces for seperate Data layer in Business Logic
-- [ ] CurrencyValueController need Repository with Interfaces for seperate Data layer in Business Logic
+- [x] CurrencyValueController need Repository with Interfaces for seperate Data layer in Business Logic
 - [x] CurrencyController need Requests for validation request body
-- [ ] CurrencyValueController need Requests for validation request body
+- [x] CurrencyValueController need Requests for validation request body
 - [ ] Seperated CurrencyCalculatorService feature need (for reusable) 
 - [ ] Seperated Currency Calculator endpoints with query parameters
 - [ ] OpenAPI documentation update (maybe generator or manual)
