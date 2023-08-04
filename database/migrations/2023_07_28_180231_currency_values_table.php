@@ -16,8 +16,7 @@ return new class extends Migration
             $table->uuid('currency_id');
             $table->float('currency_value',20, 4, true);
             $table->dateTimeTz('logged_at', 3);
-            $table->dateTime('created_at');
-            $table->dateTime('updated_at');
+            $table->timestamps();
             $table->index(['currency_id', 'logged_at', 'created_at']);
         });
     }

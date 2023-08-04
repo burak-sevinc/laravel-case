@@ -14,11 +14,10 @@ return new class extends Migration
         Schema::create('currencies', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('long_name');
-            $table->string('currencyCode', 3)->unique(); // ISO 4217 currency code
+            $table->string('currency_code', 3)->unique(); // ISO 4217 currency code
             $table->string('symbol', 3);
             $table->foreignId('created_by')->constrained('users');
-            $table->dateTime('created_at');
-            $table->dateTime('updated_at');
+            $table->timestamps();
             $table->index(['currencyCode', 'created_at']);
         });
     }
