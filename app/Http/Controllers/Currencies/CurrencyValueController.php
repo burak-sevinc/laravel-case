@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Currency;
 use App\Models\CurrencyValue;
 use Illuminate\Support\Collection;
-class listLatestCurrencyValues extends Controller
+class CurrencyValueController extends Controller
 {
     public function __invoke(Request $request, string $currencyCode)
     {
