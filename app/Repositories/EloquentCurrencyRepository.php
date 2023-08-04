@@ -10,7 +10,15 @@ class EloquentCurrencyRepository implements CurrencyRepositoryInterface
     public function all()
     {
         $currencies = Currency::all();
-        return CurrencyResource::collection($currencies);
+        $data = $currencies->map(function($currency){
+            return [
+                'id' => $currency->id,
+                'longName' => $currency->long_name,
+                'currencyCode' => $currency->currency_code,
+                'symbol' => $currency->symbol,
+            ];
+        });
+        return $data;
     }
 
     public function create(array $data)
