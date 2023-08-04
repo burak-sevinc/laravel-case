@@ -13,6 +13,7 @@
 - [x] CurrencyValueController need Repository with Interfaces for seperate Data layer in Business Logic
 - [x] CurrencyController need Requests for validation request body
 - [x] CurrencyValueController need Requests for validation request body
-- [ ] Seperated CurrencyCalculatorService feature need (for reusable) 
+- [x] Seperated CurrencyCalculatorService feature need (for reusable) 
 - [x] Seperated Currency Calculator endpoints with query parameters
 - [ ] OpenAPI documentation update (maybe generator or manual)
+- [x] (OPTIONAL) Create unit test for currency convert service
