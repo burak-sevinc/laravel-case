@@ -43,7 +43,7 @@ class EloquentCurrencyValueRepository implements CurrencyValueRepositoryInterfac
         }
 
 
-        return $value;
+        return $value->currency_value;
     }
 
     public function create(array $data)
