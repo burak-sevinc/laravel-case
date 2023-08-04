@@ -17,6 +17,7 @@ class CurrencyController extends Controller
     public function __construct(CurrencyRepositoryInterface $currencyRepository)
     {
         $this->currencyRepository = $currencyRepository;
+        $this->middleware('auth:api')->only(['store', 'update', 'destroy']);
     }
     public function __invoke(Request $request)
     {
