@@ -18,6 +18,6 @@ yarn-error.log
 /.idea
 /.vscode
 
-.php_cs.cache
-.php_cs.cache.*
-.php-cs-fixer.log
+.phpcs.cache
+.phpcs.cache.*
+.phpcs-fixer.log
