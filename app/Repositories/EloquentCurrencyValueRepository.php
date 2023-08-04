@@ -28,7 +28,7 @@ class EloquentCurrencyValueRepository implements CurrencyValueRepositoryInterfac
             return null;
         }
 
-        return $values;
+        return CurrencyValueResource::collection($values);
     }
 
     public function getLastCurrencyValueByCode($currencyCode)

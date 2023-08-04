@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,7 +18,7 @@ class CurrencyValueResource extends JsonResource
         return [
             'currencyId' => $this->currency_id,
             'currencyValue' => $this->currency_value,
-            'loggedAt' => $this->logged_at,
+            'loggedAt' => Carbon::parse($this->logged_at)->format('Y-m-d'),
         ];
     }
 }

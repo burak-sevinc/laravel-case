@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateCurrencyValueRequest;
 use Illuminate\Http\Request;
 use App\Repositories\CurrencyValueRepositoryInterface;
 use App\Services\CurrencyService;
+use Carbon\Carbon;
 use Illuminate\Http\Response;
 
 class CurrencyValueController extends Controller
@@ -34,7 +35,7 @@ class CurrencyValueController extends Controller
         $currency_values = $values->map(static function ($value) {
             return [
                 'id' => $value['id'],
-                'loggedDate' => $value['logged_at'],
+                'loggedDate' => Carbon::parse($value['logged_at'])->format('Y-m-d'),
                 'value' => $value['currency_value'] * 100
             ];
         });
