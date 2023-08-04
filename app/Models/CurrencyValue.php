@@ -21,7 +21,8 @@ class CurrencyValue extends Model
     ];
 
     protected $hidden = [
-        'id',
+        // id commented because i want to see it in the response
+        // 'id',
         'created_at',
         'updated_at',
     ];
