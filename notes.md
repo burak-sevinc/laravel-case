@@ -1,6 +1,6 @@
 ### Task list
 
-- [ ] PSR-12 - Doctrine Coding Standart
+- [x] PSR-12 - Doctrine Coding Standart
 - [ ] Migrations need refactor for project standarts
 - [ ] API routes need refactor for project standarts
 - [ ] Controller names need refactor for project standarts
