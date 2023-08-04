@@ -17,16 +17,35 @@ class EloquentCurrencyValueRepository implements CurrencyValueRepositoryInterfac
 
     public function getCurrencyValues($currencyCode)
     {
-        $currency = Currency::where('currency_code', $currencyCode)->first();
-        if (!$currency) {
+        $values = CurrencyValue::select('currency_values.id','currency_values.currency_value', 'currency_values.logged_at')
+        ->join('currencies as c', 'c.id', '=', 'currency_values.currency_id')
+        ->where('c.currency_code', $currencyCode)
+        ->orderBy('logged_at', 'desc')
+        ->get();
+
+        if(!$values){
             return null;
         }
-        $values = CurrencyValue::select(['id', 'logged_at', 'currency_value'])->where('currency_id', $currency->id)->get();
-        if ($values->isEmpty()) {
-            return null;
-        }
+
         return $values;
     }
+
+    public function getLastCurrencyValueByCode($currencyCode)
+    {
+        $value = CurrencyValue::select('currency_values.id','currency_values.currency_value', 'currency_values.logged_at')
+        ->join('currencies as c', 'c.id', '=', 'currency_values.currency_id')
+        ->where('c.currency_code', $currencyCode)
+        ->orderBy('logged_at', 'desc')
+        ->first();
+
+        if(!$value){
+            return null;
+        }
+
+
+        return $value;
+    }
+
     public function create(array $data)
     {
         $currency = $this->currencyService->findCurrency($data['currency_code']);
