@@ -28,6 +28,7 @@ Route::group(['prefix' => 'currencies'], function () {
 });
 
 Route::group(['prefix' => 'currency-values'], function () {
+    Route::get('/', CurrencyValueController::class);
     Route::get('/{currencyCode}', CurrencyValueController::class);
     Route::post('/', [CurrencyValueController::class, 'store']);
     Route::put('/{id}', [CurrencyValueController::class, 'update']);
