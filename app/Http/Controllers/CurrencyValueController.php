@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ShowCurrencyValueRequest;
 use App\Http\Requests\StoreCurrencyValueRequest;
 use App\Http\Requests\UpdateCurrencyValueRequest;
 use Illuminate\Http\Request;
@@ -23,11 +24,9 @@ class CurrencyValueController extends Controller
         $this->currencyService = $currencyService;
         $this->middleware('auth:api')->only(['store', 'update', 'destroy']);
     }
-    public function __invoke(string $currencyCode = null)
+    public function __invoke(ShowCurrencyValueRequest $request)
     {
-        if (is_null($currencyCode)) {
-            return response()->json(['error' => 'Currency code not found'], 404);
-        }
+        $currencyCode = $request->validated()['currencyCode'];
 
         $currency = $this->currencyService->findCurrency($currencyCode);
 
