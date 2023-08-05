@@ -31,13 +31,14 @@ class CurrencyConvertController extends Controller
         $fromValue = $this->currencyValueService->getLastCurrencyValueByCode($from);
         $toValue = $this->currencyValueService->getLastCurrencyValueByCode($to);
 
-        $result = $this->currencyConvertService->convert($fromValue, $toValue, $amount);
-
         if (!$fromValue || !$toValue) {
             return response()->json([
                 'message' => 'Currency value not found.',
             ], Response::HTTP_NOT_FOUND);
         }
+        
+        $result = $this->currencyConvertService->convert($fromValue, $toValue, $amount);
+
 
         return response()->json([
             'data' => [
