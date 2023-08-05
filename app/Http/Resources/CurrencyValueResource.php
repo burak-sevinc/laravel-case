@@ -18,7 +18,7 @@ class CurrencyValueResource extends JsonResource
         return [
             'currencyId' => $this->currency_id,
             'currencyValue' => $this->currency_value,
-            'loggedAt' => Carbon::parse($this->logged_at)->format('Y-m-d'),
+            'loggedDate' => Carbon::parse($this->logged_at)->format('Y-m-d'),
         ];
     }
 }
