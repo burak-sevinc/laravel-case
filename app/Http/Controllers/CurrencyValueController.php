@@ -49,7 +49,7 @@ class CurrencyValueController extends Controller
         $formattedCurrency = $this->currencyService->formatCurrency($currency);
 
         return response()->json(['data' => [
-            'currency' => $formattedCurrency,
+            'currencyDetails' => $formattedCurrency,
             'values' => $currency_values
         ]], 200);
     }
