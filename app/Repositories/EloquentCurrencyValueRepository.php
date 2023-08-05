@@ -18,13 +18,17 @@ class EloquentCurrencyValueRepository implements CurrencyValueRepositoryInterfac
 
     public function getCurrencyValues($currencyCode)
     {
-        $values = CurrencyValue::select('currency_values.id','currency_values.currency_value', 'currency_values.logged_at')
-        ->join('currencies as c', 'c.id', '=', 'currency_values.currency_id')
-        ->where('c.currency_code', $currencyCode)
-        ->orderBy('logged_at', 'desc')
-        ->get();
+        $values = CurrencyValue::select(
+            'currency_values.id',
+            'currency_values.currency_value',
+            'currency_values.logged_at'
+        )
+            ->join('currencies as c', 'c.id', '=', 'currency_values.currency_id')
+            ->where('c.currency_code', $currencyCode)
+            ->orderBy('logged_at', 'desc')
+            ->get();
 
-        if(!$values){
+        if (!$values) {
             return null;
         }
 
@@ -33,13 +37,17 @@ class EloquentCurrencyValueRepository implements CurrencyValueRepositoryInterfac
 
     public function getLastCurrencyValueByCode($currencyCode)
     {
-        $value = CurrencyValue::select('currency_values.id','currency_values.currency_value', 'currency_values.logged_at')
-        ->join('currencies as c', 'c.id', '=', 'currency_values.currency_id')
-        ->where('c.currency_code', $currencyCode)
-        ->orderBy('logged_at', 'desc')
-        ->first();
+        $value = CurrencyValue::select(
+            'currency_values.id',
+            'currency_values.currency_value',
+            'currency_values.logged_at'
+        )
+            ->join('currencies as c', 'c.id', '=', 'currency_values.currency_id')
+            ->where('c.currency_code', $currencyCode)
+            ->orderBy('logged_at', 'desc')
+            ->first();
 
-        if(!$value){
+        if (!$value) {
             return null;
         }
 

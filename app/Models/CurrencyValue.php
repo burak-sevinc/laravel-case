@@ -10,6 +10,7 @@ class CurrencyValue extends Model
 {
     use UUID;
     use HasFactory;
+
     protected $keyType = 'string';
 
     protected $guarded = ['id'];

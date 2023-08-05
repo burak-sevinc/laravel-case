@@ -36,6 +36,4 @@ class StoreCurrencyRequest extends FormRequest
             'symbol' => $this->input('symbol'),
         ];
     }
-
-    
 }

@@ -16,8 +16,11 @@ class CurrencyConvertController extends Controller
     protected $currencyValueService;
     protected $currencyConvertService;
 
-    public function __construct(CurrencyService $currencyService, CurrencyValueService $currencyValueService, CurrencyConvertService $currencyConvertService)
-    {
+    public function __construct(
+        CurrencyService $currencyService,
+        CurrencyValueService $currencyValueService,
+        CurrencyConvertService $currencyConvertService
+    ) {
         $this->currencyService = $currencyService;
         $this->currencyValueService = $currencyValueService;
         $this->currencyConvertService = $currencyConvertService;
@@ -36,7 +39,7 @@ class CurrencyConvertController extends Controller
                 'message' => 'Currency value not found.',
             ], Response::HTTP_NOT_FOUND);
         }
-        
+
         $result = $this->currencyConvertService->convert($fromValue, $toValue, $amount);
 
 

@@ -18,8 +18,10 @@ class CurrencyValueController extends Controller
 {
     private $currencyValueRepository;
     private $currencyService;
-    public function __construct(CurrencyValueRepositoryInterface $currencyValueRepository, CurrencyService $currencyService)
-    {
+    public function __construct(
+        CurrencyValueRepositoryInterface $currencyValueRepository,
+        CurrencyService $currencyService
+    ) {
         $this->currencyValueRepository = $currencyValueRepository;
         $this->currencyService = $currencyService;
         $this->middleware('auth:api')->only(['store', 'update', 'destroy']);
@@ -71,7 +73,6 @@ class CurrencyValueController extends Controller
                 'data' => $currencyValue,
             ], Response::HTTP_CREATED);
         } catch (\Exception $e) {
-
             return response()->json([
                 'message' => 'An error occurred while creating.',
                 'error' => $e->getMessage(),

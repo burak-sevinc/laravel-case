@@ -18,7 +18,7 @@ class CurrencyValuesSeeder extends Seeder
             'currency_id' => '11540e34-4cd1-448e-af98-a1b14a5abd44',
             'currency_value' => 26.9502,
             'logged_at' => (new \DateTimeImmutable('now', new \DateTimeZone('Europe/Istanbul')))
-                ->sub( new \DateInterval('P1D'))
+                ->sub(new \DateInterval('P1D'))
                 ->format(DATE_ATOM),
             'created_at' => (new \DateTimeImmutable())->format(DATE_ATOM),
             'updated_at' => (new \DateTimeImmutable())->format(DATE_ATOM),
@@ -30,7 +30,7 @@ class CurrencyValuesSeeder extends Seeder
             'currency_id' => 'c961cb13-4d6f-44b1-9c41-c1115359daaa',
             'currency_value' => 29.6118,
             'logged_at' => (new \DateTimeImmutable('now', new \DateTimeZone('Europe/Istanbul')))
-                ->sub( new \DateInterval('P1D'))
+                ->sub(new \DateInterval('P1D'))
                 ->format(DATE_ATOM),
             'created_at' => (new \DateTimeImmutable())->format(DATE_ATOM),
             'updated_at' => (new \DateTimeImmutable())->format(DATE_ATOM),
@@ -58,18 +58,5 @@ class CurrencyValuesSeeder extends Seeder
             'created_at' => (new \DateTimeImmutable())->format(DATE_ATOM),
             'updated_at' => (new \DateTimeImmutable())->format(DATE_ATOM),
         ]);
-
-
     }
 }
-
-
-
-
-
-
-
-
-
-
-

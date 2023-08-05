@@ -63,7 +63,6 @@ class CurrencyController extends Controller
                 'data' => $currency,
             ], Response::HTTP_CREATED);
         } catch (\Exception $e) {
-
             return response()->json([
                 'message' => 'An error occurred while creating.',
                 'error' => $e->getMessage(),

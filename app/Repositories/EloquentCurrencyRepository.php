@@ -10,7 +10,7 @@ class EloquentCurrencyRepository implements CurrencyRepositoryInterface
     public function all()
     {
         $currencies = Currency::all();
-        $data = $currencies->map(function($currency){
+        $data = $currencies->map(function ($currency) {
             return [
                 'id' => $currency->id,
                 'longName' => $currency->long_name,

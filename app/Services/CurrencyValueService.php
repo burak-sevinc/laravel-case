@@ -25,5 +25,4 @@ class CurrencyValueService
     {
         return $this->currencyValueRepository->getLastCurrencyValueByCode($currencyCode);
     }
-    
 }

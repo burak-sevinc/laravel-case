@@ -17,7 +17,7 @@ class AuthRepository implements AuthRepositoryInterface
 
         $user = User::where('email', $credentials['email'])->first();
         $user = UserResource::make($user);
-        
+
         $data = [
             'user' => $user,
             'token' => $token

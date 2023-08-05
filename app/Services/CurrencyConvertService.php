@@ -12,5 +12,4 @@ class CurrencyConvertService
         $result = round($rate * $amount, 4);
         return $result;
     }
-
 }

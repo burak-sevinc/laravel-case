@@ -24,7 +24,12 @@ class UpdateCurrencyRequest extends FormRequest
         $currencyCode = $this->route('currencyCode');
         return [
             'longName' => 'required|string',
-            'currencyCode' => 'required|string|max:3|unique:currencies,currency_code,' . $currencyCode . ',currency_code',
+            'currencyCode' => [
+                'required',
+                'string',
+                'max:3',
+                'unique:currencies,currency_code,' . $currencyCode . ',currency_code'
+            ],
             'symbol' => 'required|string|max:1',
         ];
     }
