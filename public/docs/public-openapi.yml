@@ -14,21 +14,121 @@ servers:
     description: Public API Stage URL
   - url: https://api.legacy-app.com/api
     description: Public API Production URL
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
 paths:
+  /login:
+    post:
+      summary: User Login
+      description: Authenticate the user and obtain a JWT token.
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: johndoe@ready2gg
+                password:
+                  type: string
+                  example: ready2ggPassword
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          email:
+                            type: string
+                            format: email
+                            example: johndoe@ready2gg
+                          emailVerifiedAt:
+                            type: string
+                            format: date-time
+                          createdAt:
+                            type: string
+                            format: date-time
+                          updatedAt:
+                            type: string
+                            format: date-time
+                      token:
+                        type: string
+                        example: eyJ0eXAiOi...
+                example:
+                  data:
+                    user:
+                      id: 1
+                      email: "johndoe@ready2gg"
+                      emailVerifiedAt: null
+                      createdAt: null
+                      updatedAt: null
+                    token: "eyJ0eXAiOiJKV1QiLCJhbGJ9..."
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid credentials.
+        422:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The field is required.
+                  errors:
+                    type: object
+                    properties:
+                      field:
+                        type: array
+                        items:
+                          type: string
+                          example: The field is required.
+
   /currencies:
     get:
       tags:
         - Currencies
-      summary: List currencies
-      description: Returns list of available currencies
+      summary: Get all currencies
+      description: Retrieve a list of all available currencies.
       responses:
         200:
-          description: OK
+          description: Successful response
           content:
-            application/vnd.public-api-legacy-app.v1+json:
+            application/json:
               schema:
+                type: object
                 properties:
-                  currencies:
+                  data:
                     type: array
                     items:
                       type: object
@@ -36,7 +136,7 @@ paths:
                         id:
                           type: string
                           format: uuid
-                          example: 0ea604bb-8f93-4f73-abab-d5e5b50907bd
+                          example: 1d7d1c1a-6f1a-4f9a-8b5e-0c2d6f0f7a1a
                         longName:
                           type: string
                           example: Amerikan Doları
@@ -46,27 +146,43 @@ paths:
                         symbol:
                           type: string
                           example: $
-  /currency_values/{currencyCode}:
-    get:
+    post:
+      summary: Create a new currency
       tags:
         - Currencies
-      summary: Get currency details
-      description: Returns currency details and values
-      parameters:
-        - in: path
-          name: currencyCode
-          schema:
-            type: string
-          required: true
-          description: Currency 3-char code
+      description: Create new currency with the given properties.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                longName:
+                  type: string
+                  example: Amerikan Doları
+                currencyCode:
+                  type: string
+                  example: USD
+                  description: 3-char currency code
+                symbol:
+                  type: string
+                  example: $
+                  description: Currency symbol 1-char
       responses:
-        200:
-          description: OK
+        201:
+          description: Successful response
           content:
-            application/vnd.public-api-legacy-app.v1+json:
+            application/json:
               schema:
+                type: object
                 properties:
-                  currency_details:
+                  message:
+                    type: string
+                    example: Currency created successfully.
+                  data:
                     type: object
                     properties:
                       longName:
@@ -78,62 +194,434 @@ paths:
                       symbol:
                         type: string
                         example: $
-                  values:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        logged_date:
+        401:
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        422:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The field is required.
+                  errors:
+                    type: object
+                    properties:
+                      field:
+                        type: array
+                        items:
                           type: string
-                          format: date
-                          example: 2023-07-28
-                        value:
-                          description: Exchange value in TRY in terms of Kuruş. i.e 26.9545 TRY = 2695.45 Kr
-                          type: number
-                          format: integer
-                          example: 2695.45
-        403:
-            description: Not Found
-            content:
-              application/problem+api:
-                schema:
-                  properties:
-                    type:
-                      type: string
-                      format: uri
-                      description: |
-                        An absolute URI that identifies the problem type.  When dereferenced,
-                        it SHOULD provide human-readable documentation for the problem type
-                        (e.g., using HTML).
-                      default: 'about:blank'
-                      example: 'https://zalando.github.io/problem/constraint-violation'
-                    code:
-                      type: string
-                      description: |
-                        Unique string value within the project that can be used to issue's id
-                      examples:
-                        - 'identity-and-access/forbidden'
-                        - 'AUTH-0001'
-                    title:
-                      type: string
-                      description: |
-                        A short, summary of the problem type. Written in english and readable
-                        for engineers (usually not suited for non technical stakeholders and
-                        not localized); example: Service Unavailable
-                    status:
-                      type: integer
-                      format: int32
-                      description: |
-                        The HTTP status code generated by the origin server for this occurrence
-                        of the problem.
-                      minimum: 100
-                      maximum: 600
-                      exclusiveMaximum: true
-                      example: 503
-                    detail:
-                      type: string
-                      description: |
-                        A human readable explanation specific to this occurrence of the
-                        problem.
-                      example: Connection to database timed out
+                          example: The field is required.
 
+  /currencies/{currencyCode}:
+    get:
+      summary: Get a currency details
+      tags:
+        - Currencies
+      description: Retrieve a specific currency details by its currency code.
+      parameters:
+        - name: currencyCode
+          in: path
+          required: true
+          description: Currency code of the currency details to retrieve
+          schema:
+            type: string
+            example: USD
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      longName:
+                        type: string
+                        example: Amerikan Doları
+                      currencyCode:
+                        type: string
+                        example: USD
+                      symbol:
+                        type: string
+                        example: $
+    put:
+      summary: Update a currency
+      tags:
+        - Currencies
+      description: Update a specific currency by its currency code.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: currencyCode
+          in: path
+          required: true
+          description: Currency code of the currency to update
+          schema:
+            type: string
+            example: USD
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                longName:
+                  type: string
+                  example: Amerikan Doları
+                currencyCode:
+                  type: string
+                  example: USD
+                symbol:
+                  type: string
+                  example: $
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Currency updated successfully.
+                  data:
+                    type: object
+                    properties:
+                      longName:
+                        type: string
+                        example: Amerikan Doları
+                      currencyCode:
+                        type: string
+                        example: USD
+                      symbol:
+                        type: string
+                        example: $
+        401:
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        422:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: object
+                    properties:
+                      field:
+                        type: array
+                        items:
+                          type: string
+                      field:
+                        type: array
+                        items:
+                          type: string
+
+    delete:
+      summary: Delete a currency
+      tags:
+        - Currencies
+      description: Delete a specific currency by its currency code.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: currencyCode
+          in: path
+          required: true
+          description: Currency code of the currency to delete
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Currency deleted successfully.
+        401:
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+
+        
+  /currency-values:
+    get:
+      tags:
+        - Currency Values
+      summary: Get currency values
+      description: Retrieve currency values based on currency code.
+      parameters:
+        - in: query
+          name: currencyCode
+          schema:
+            type: string
+            example: USD
+          required: true
+          description: Currency 3-char code
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      currencyDetails:
+                        type: object
+                        properties:
+                          longName:
+                            type: string
+                            example: Amerikan Doları
+                          currencyCode:
+                            type: string
+                            example: USD
+                          symbol:
+                            type: string
+                            example: $
+                      values:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                              example: "0976d92f-1732-498..."
+                            loggedDate:
+                              type: string
+                              format: date
+                              example: 2023-07-28
+                            value:
+                              description: Exchange value in TRY in terms of Kuruş. i.e 26.9545 TRY = 2695.45 Kr
+                              type: number
+                              format: integer
+                              example: 2695.45
+                        
+                  
+    post:
+      summary: Create a currency value
+      description: Create a new currency value by the currency code.
+      tags:
+        - Currency Values
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currencyCode:
+                  type: string
+                  example: USD
+                currencyValue:
+                  type: string
+                  example: 26.99
+              example:
+                currencyCode: "USD"
+                currencyValue: "26.99"
+      responses:
+        201:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Currency value created successfully."
+                  data:
+                    type: object
+                    properties:
+                      currencyId:
+                        type: string
+                        example: "11540e34-4cd1-448e-af..."
+                      currencyValue:
+                        type: string
+                        example: "26.99"
+                      loggedDate:
+                        type: string
+                        example: "2023-08-05"
+        401:
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        422:
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "The currency value and currency code field is required."
+                  errors:
+                    type: object
+                    properties:
+                      currencyValue:
+                        type: array
+                        items:
+                          type: string
+                          example: "The currency value field is required."
+  
+  /currency-values/{id}:
+    put:
+      summary: Update a currency value
+      tags:
+        - Currency Values
+      description: Update a specific currency value by its currency code.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Currency value id of the currency value to update
+          schema:
+            type: string
+            example: USD
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currencyValue:
+                  type: string
+                  example: "22.9545"
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Currency value updated successfully.
+                  data:
+                    type: object
+                    properties:
+                      currencyId:
+                        type: string
+                        example: 0976d92f-1732-498...
+                      currencyValue:
+                        type: string
+                        example: 22.9545
+                      loggedDate:
+                        type: string
+                        example: "2023-08-05"
+        401:
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+        422:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: object
+                    properties:
+                      field:
+                        type: array
+                        items:
+                          type: string
+                      field:
+                        type: array
+                        items:
+                          type: string
+    delete:
+      summary: Delete a currency value
+      description: Delete an existing currency value by providing its ID.
+      tags:
+        - Currency Values
+      security:
+        - BearerAuth: []  # JWT Auth Bearer Token required
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          example: "482b07d7-4965-4464-ae97-8a09160a4443"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Currency value deleted successfully."
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Currency value not found."
