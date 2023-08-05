@@ -34,14 +34,14 @@ class CurrencyController extends Controller
     public function show($currencyCode)
     {
         $currency = $this->currencyService->findCurrency($currencyCode);
-        // Format the currency for the response
-        $currency = $this->currencyService->formatCurrency($currency);
 
         if (!$currency) {
             return response()->json([
                 'message' => 'Currency not found.',
             ], Response::HTTP_NOT_FOUND);
         }
+        // Format the currency for the response
+        $currency = $this->currencyService->formatCurrency($currency);
 
         return response()->json([
             'data' => $currency,
