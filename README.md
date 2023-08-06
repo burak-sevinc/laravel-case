@@ -87,7 +87,7 @@ Yazmış olduğunuz api dokümantasyonu implamente etmeniz beklenmektedir. Bu ba
 
 - Kur hesaplama modülü için unit test yazmanız.
 - Kur hesaplama modülünü ayrı bir repository'e taşıyıp https://packagist.org üzerinden yayınlanan bir composer paketi haline getirmek.
-- Psalm, Phpstan gibi static kod analysis tool'larını composer komutu ile çalırış hale getirip kullanmak. 
+- Psalm, Phpstan gibi static kod analysis tool'larını composer komutu ile çalışır hale getirip kullanmak. 
 - Yazdığınız kodu Scrutinizer CI https://scrutinizer-ci.com/ değerlendirmeye alıp build:passing, coverage ve scrutinizer not badge'leri almak.
 - Yazdığınız kodu klonlamak yerine fork edip uygulamanın son halini Merge Request ile iletmek.
 - Bu guide içindeki yazım ve ifade yanlışlarını, yanlış verilmiş referans ya da komut örneklerini düzeltmek.  
