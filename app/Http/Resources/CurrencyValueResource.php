@@ -6,6 +6,13 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * App\Https\Resources\CurrencyValueResource
+ *
+ * @property string $currency_id
+ * @property string $currency_value
+ * @property string $logged_at
+ */
 class CurrencyValueResource extends JsonResource
 {
     /**

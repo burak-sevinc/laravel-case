@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateCurrencyValueRequest;
 use Illuminate\Http\Request;
 use App\Repositories\CurrencyValueRepositoryInterface;
 use App\Services\CurrencyService;
+use App\Services\CurrencyValueService;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
 
@@ -18,12 +19,15 @@ class CurrencyValueController extends Controller
 {
     private $currencyValueRepository;
     private $currencyService;
+    private $currencyValueService;
     public function __construct(
         CurrencyValueRepositoryInterface $currencyValueRepository,
-        CurrencyService $currencyService
+        CurrencyService $currencyService,
+        CurrencyValueService $currencyValueService
     ) {
         $this->currencyValueRepository = $currencyValueRepository;
         $this->currencyService = $currencyService;
+        $this->currencyValueService = $currencyValueService;
         $this->middleware('auth:api')->only(['store', 'update', 'destroy']);
     }
     public function __invoke(ShowCurrencyValueRequest $request)
@@ -36,7 +40,11 @@ class CurrencyValueController extends Controller
             return response()->json(['error' => 'Currency not found'], 404);
         }
 
-        $values = $this->currencyValueRepository->getCurrencyValues($currency->currency_code);
+        $values = $this->currencyValueService->getCurrencyValues($currency->currency_code);
+
+        if (!$values) {
+            return response()->json(['error' => 'Currency values not found'], 404);
+        }
 
         $currency_values = $values->map(static function ($value) {
             return [

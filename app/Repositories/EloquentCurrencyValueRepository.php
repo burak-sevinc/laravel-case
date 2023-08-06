@@ -28,7 +28,7 @@ class EloquentCurrencyValueRepository implements CurrencyValueRepositoryInterfac
             ->orderBy('logged_at', 'desc')
             ->get();
 
-        if (!$values) {
+        if ($values->isEmpty()) {
             return null;
         }
 
