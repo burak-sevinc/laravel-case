@@ -18,3 +18,4 @@
 - [x] OpenAPI documentation update (maybe generator or manual)
 - [x] (OPTIONAL) Create unit test for currency convert service
 - [x] Convert response and request bodies to camelCase format
+- [x] (OPTIONAL) PhpStan implement
