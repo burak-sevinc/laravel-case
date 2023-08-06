@@ -8,20 +8,24 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthRepository implements AuthRepositoryInterface
 {
-    public function login(array $credentials)
+    /**
+     * Summary of login
+     * @param array $credentials
+     * @return array|null
+     */
+    public function login(array $credentials): array|null
     {
         $token = Auth::attempt($credentials);
-        if (!$token) {
+        if (! $token) {
             return null;
         }
 
         $user = User::where('email', $credentials['email'])->first();
         $user = UserResource::make($user);
 
-        $data = [
+        return [
             'user' => $user,
-            'token' => $token
+            'token' => $token,
         ];
-        return $data;
     }
 }

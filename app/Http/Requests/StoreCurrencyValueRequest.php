@@ -31,7 +31,7 @@ class StoreCurrencyValueRequest extends FormRequest
     {
         return [
             'currency_code' => $this->input('currencyCode'),
-            'currency_value' => $this->input('currencyValue')
+            'currency_value' => $this->input('currencyValue'),
         ];
     }
 }

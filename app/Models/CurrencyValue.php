@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Traits\UUID;
@@ -11,17 +13,14 @@ class CurrencyValue extends Model
     use UUID;
     use HasFactory;
 
-    protected $keyType = 'string';
-
-    protected $guarded = ['id'];
-
+    protected $keyType  = 'string';
+    protected $guarded  = ['id'];
     protected $fillable = [
         'currency_id',
         'currency_value',
         'logged_at',
     ];
-
-    protected $hidden = [
+    protected $hidden   = [
         // id commented because i want to see it in the response
         // 'id',
         'created_at',

@@ -8,6 +8,7 @@ use App\Http\Requests\CurrencyConvertRequest;
 use App\Services\CurrencyConvertService;
 use App\Services\CurrencyService;
 use App\Services\CurrencyValueService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 class CurrencyConvertController extends Controller
@@ -19,35 +20,39 @@ class CurrencyConvertController extends Controller
     public function __construct(
         CurrencyService $currencyService,
         CurrencyValueService $currencyValueService,
-        CurrencyConvertService $currencyConvertService
+        CurrencyConvertService $currencyConvertService,
     ) {
-        $this->currencyService = $currencyService;
-        $this->currencyValueService = $currencyValueService;
+        $this->currencyService        = $currencyService;
+        $this->currencyValueService   = $currencyValueService;
         $this->currencyConvertService = $currencyConvertService;
     }
-    public function __invoke(CurrencyConvertRequest $request)
+
+    /**
+     * Summary of __invoke
+     *
+     * @param \App\Http\Requests\CurrencyConvertRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function __invoke(CurrencyConvertRequest $request): JsonResponse
     {
-        $from = $request->validated()['from'];
-        $to = $request->validated()['to'];
+        $from   = $request->validated()['from'];
+        $to     = $request->validated()['to'];
         $amount = $request->validated()['amount'];
 
         $fromValue = $this->currencyValueService->getLastCurrencyValueByCode($from);
-        $toValue = $this->currencyValueService->getLastCurrencyValueByCode($to);
+        $toValue   = $this->currencyValueService->getLastCurrencyValueByCode($to);
 
-        if (!$fromValue || !$toValue) {
-            return response()->json([
-                'message' => 'Currency value not found.',
-            ], Response::HTTP_NOT_FOUND);
+        if (! $fromValue || ! $toValue) {
+            return response()->json(['message' => 'Currency value not found.'], Response::HTTP_NOT_FOUND);
         }
 
         $result = $this->currencyConvertService->convert($fromValue, $toValue, $amount);
 
-
         return response()->json([
             'data' => [
                 'amount' => $amount,
-                'result' => $result
-            ]
+                'result' => $result,
+            ],
         ], 200);
     }
 }

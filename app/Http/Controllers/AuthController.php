@@ -20,9 +20,9 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         $credentials = $request->validated();
-        $user = $this->authRepository->login($credentials);
+        $user        = $this->authRepository->login($credentials);
 
-        if (!$user) {
+        if (! $user) {
             return response()->json(['message' => 'Invalid credentials'], Response::HTTP_UNAUTHORIZED);
         }
 
