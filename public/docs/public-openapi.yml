@@ -39,7 +39,7 @@ paths:
                 email:
                   type: string
                   format: email
-                  example: johndoe@ready2gg
+                  example: johndoe@ready2.gg
                 password:
                   type: string
                   example: ready2ggPassword
@@ -434,8 +434,16 @@ paths:
                               type: number
                               format: integer
                               example: 2695.45
-                        
-                  
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Currency value not found."
     post:
       summary: Create a currency value
       description: Create a new currency value by the currency code.
@@ -605,7 +613,7 @@ paths:
             type: string
           example: "482b07d7-4965-4464-ae97-8a09160a4443"
       responses:
-        '200':
+        200:
           description: Successful response
           content:
             application/json:
@@ -615,7 +623,7 @@ paths:
                   message:
                     type: string
                     example: "Currency value deleted successfully."
-        '404':
+        404:
           description: Not Found
           content:
             application/json:
@@ -652,7 +660,7 @@ paths:
           schema:
             type: number
       responses:
-        '200':
+        200:
           description: Successful response
           content:
             application/json:
@@ -668,7 +676,7 @@ paths:
                       result:
                         type: number
                         example: 10.0007
-        '404':
+        404:
           description: Not Found
           content:
             application/json:
